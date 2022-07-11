@@ -4752,9 +4752,7 @@ WorkerSocket.prototype.send = function(data) {
 };
 
 WorkerSocket.prototype.close = function() {
-  this.socket_.postMessage({
-    close: true
-  });
+  this.socket_.terminate();
 };
 
 module.exports = WorkerSocket;
@@ -4789,10 +4787,7 @@ module.exports = function(self) {
       socket.send(data);
     } else {
       // control message
-      if (data.hasOwnProperty('close')) {
-        socket.close();
-        socket = null;
-      } else if (data.hasOwnProperty('uri')) {
+      if (data.hasOwnProperty('uri')) {
         var uri = data.uri;
 
         socket = new WebSocket(uri);
